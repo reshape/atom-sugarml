@@ -1,0 +1,19 @@
+{
+  "name": "atom-sugarml",
+  "description": "Sugarml language support in Atom",
+  "version": "0.0.0",
+  "author": "Jeff Escalante",
+  "bugs": "https://github.com/reshape/atom-sugarml/issues",
+  "engines": {
+    "atom": "*",
+    "node": ">=6"
+  },
+  "homepage": "https://github.com/reshape/atom-sugarml",
+  "keywords": [
+    "atom",
+    "sugarml"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "repository": "https://github.com/reshape/atom-sugarml"
+}
