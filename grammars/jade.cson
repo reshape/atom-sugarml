@@ -23,8 +23,14 @@
     'name': 'comment.block.sugarml'
   }
   {
-    'begin': '^\\s*({{|{{{)'
-    'end': '(}}|}}})$'
+    'begin': '(\\{\\{\\{?)'
+    beginCaptures:
+      '1':
+        'name': 'string.interpolated.sugarml'
+    'end': '(\\}\\}\\}?)'
+    endCaptures:
+      '1':
+        'name': 'string.interpolated.sugarml'
     'name': 'source.js.embedded.sugarml'
     'patterns': [
       {
