@@ -1,5 +1,6 @@
 'fileTypes': [
-  'sml'
+  'sml',
+  'sgr'
 ]
 'name': 'SugarML'
 'patterns': [
