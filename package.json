@@ -1,7 +1,7 @@
 {
   "name": "atom-sugarml",
   "description": "Sugarml language support in Atom",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "author": "Jeff Escalante",
   "bugs": "https://github.com/reshape/atom-sugarml/issues",
   "engines": {
