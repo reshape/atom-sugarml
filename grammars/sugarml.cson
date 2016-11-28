@@ -1,0 +1,320 @@
+'fileTypes': [
+  'sgr'
+]
+'name': 'SugarML'
+'patterns': [
+  {
+    'comment': 'Doctype declaration.'
+    'match': '^doctype(\\s*[a-zA-Z0-9-_]+)?'
+    'name': 'comment.other.doctype.sugarml'
+  }
+  {
+    'begin': '^(\\s*)//'
+    'comment': 'Buffered (html) comments.'
+    'end': '^(?!(\\1\\s)|\\s*$)'
+    'name': 'comment.line.buffered.sugarml'
+  }
+  {
+    'begin': '^(\\s*)(script)((\\.$)|(?=[.#(].*\\.$))'
+    'beginCaptures':
+      '2':
+        'name': 'entity.name.tag.script.sugarml'
+    'comment': 'Script tag with JavaScript code.'
+    'end': '^(?!(\\1\\s)|\\s*$)'
+    'name': 'source.script.sugarml'
+    'patterns': [
+      {
+        'begin': '\\G(?=\\()'
+        'end': '$'
+        'name': 'stuff.tag.script.sugarml'
+        'patterns': [
+          {
+            'include': '#tag_attributes'
+          }
+        ]
+      }
+      {
+        'begin': '\\G(?=[.#])'
+        'end': '$'
+        'name': 'stuff.tag.script.sugarml'
+        'patterns': [
+          {
+            'include': '#complete_tag'
+          }
+        ]
+      }
+      {
+        'include': 'source.js'
+      }
+    ]
+  }
+  {
+    'begin': '^(\\s*)(style)((\\.$)|(?=[.#(].*\\.$))'
+    'beginCaptures':
+      '2':
+        'name': 'entity.name.tag.style.sugarml'
+    'comment': 'Style tag with CSS code.'
+    'end': '^(?!(\\1\\s)|\\s*$)'
+    'name': 'source.style.sugarml'
+    'patterns': [
+      {
+        'begin': '\\G(?=\\()'
+        'end': '$'
+        'name': 'stuff.tag.style.sugarml'
+        'patterns': [
+          {
+            'include': '#tag_attributes'
+          }
+        ]
+      }
+      {
+        'begin': '\\G(?=[.#])'
+        'end': '$'
+        'name': 'stuff.tag.style.sugarml'
+        'patterns': [
+          {
+            'include': '#complete_tag'
+          }
+        ]
+      }
+      {
+        'include': 'source.css'
+      }
+    ]
+  }
+  {
+    'begin': '^(\\s*)(?=[\\w.#].*?\\.$)(?=(?:(?:(?:(?:(?:#[\\w-]+)|(?:\\.[\\w-]+))|(?:(?:[#!]\\{[^}]*\\})|(?:\\w(?:(?:[\\w:-]+[\\w-])|(?:[\\w-]*)))))(?:(?:#[\\w-]+)|(?:\\.[\\w-]+)|(?:\\((?:[^()\\\'\\"]*(?:(?:\\\'(?:[^\\\']|(?:(?<!\\\\)\\\\\\\'))*\\\')|(?:\\"(?:[^\\"]|(?:(?<!\\\\)\\\\\\"))*\\")))*[^()]*\\))*)*)(?:(?:(?::\\s+)|(?<=\\)))(?:(?:(?:(?:#[\\w-]+)|(?:\\.[\\w-]+))|(?:(?:[#!]\\{[^}]*\\})|(?:\\w(?:(?:[\\w:-]+[\\w-])|(?:[\\w-]*)))))(?:(?:#[\\w-]+)|(?:\\.[\\w-]+)|(?:\\((?:[^()\\\'\\"]*(?:(?:\\\'(?:[^\\\']|(?:(?<!\\\\)\\\\\\\'))*\\\')|(?:\\"(?:[^\\"]|(?:(?<!\\\\)\\\\\\"))*\\")))*[^()]*\\))*)*))*)\\.$)(?:(?:(#[\\w-]+)|(\\.[\\w-]+))|((?:[#!]\\{[^}]*\\})|(?:\\w(?:(?:[\\w:-]+[\\w-])|(?:[\\w-]*)))))'
+    'beginCaptures':
+      '2':
+        'name': 'constant.id.tag.sugarml'
+      '3':
+        'name': 'constant.language.js'
+      '4':
+        'name': 'entity.name.tag.sugarml'
+    'comment': 'Generated from dot_block_tag.py'
+    'end': '^(?!(\\1\\s)|\\s*$)'
+    'name': 'text.block.dot.tag.sugarml'
+    'patterns': [
+      {
+        'include': '#tag_attributes'
+      }
+      {
+        'include': '#complete_tag'
+      }
+      {
+        'begin': '^(?=.)'
+        'end': '$'
+        'name': 'text.block.sugarml'
+        'patterns': [
+          {
+            'include': '#embedded_html'
+          }
+          {
+            'include': '#html_entity'
+          }
+        ]
+      }
+    ]
+  }
+  {
+    'begin': '^\\s*+(?=[^/])'
+    'comment': 'All constructs that generally span a single line starting with any number of white-spaces.'
+    'end': '$'
+    'name': 'tag.sugarml'
+    'patterns': [
+      {
+        'begin': '\\|'
+        'comment': 'Tag pipe text line.'
+        'end': '$'
+        'name': 'text.block.pipe.sugarml'
+        'patterns': [
+          {
+            'include': '#embedded_html'
+          }
+          {
+            'include': '#html_entity'
+          }
+        ]
+      }
+      {
+        'include': '#complete_tag'
+      }
+    ]
+  }
+]
+'repository':
+  'expression':
+    'begin': '(\\{\\{\\{?)'
+    comment: 'Standard reshape-expressions expression'
+    beginCaptures:
+      '1':
+        'name': 'string.interpolated.sugarml'
+    'end': '(\\}\\}\\}?)'
+    endCaptures:
+      '1':
+        'name': 'string.interpolated.sugarml'
+    'name': 'source.js.embedded.sugarml'
+    'patterns': [
+      {
+        'include': 'source.js'
+      }
+    ]
+  'complete_tag':
+    'begin': '(?=[\\w.#])|(:\\s*)'
+    'end': '(\\.?$)|(?=:.)'
+    'name': 'complete_tag.sugarml'
+    'patterns': [
+      {
+        'match': '(?<=:)\\w.*$'
+        'name': 'invalid.illegal.name.tag.sugarml'
+      }
+      {
+        'include': '#tag_name'
+      }
+      {
+        'include': '#tag_id'
+      }
+      {
+        'include': '#tag_classes'
+      }
+      {
+        'include': '#tag_attributes'
+      }
+      {
+        'captures':
+          '2':
+            'name': 'invalid.illegal.end.tag.sugarml'
+          '4':
+            'name': 'invalid.illegal.end.tag.sugarml'
+        'match': '((\\.)\\s+$)|((:)\\s*$)'
+      }
+      {
+        'include': '#tag_text'
+      }
+    ]
+  'embedded_html':
+    'begin': '(?=<[^>]*>)'
+    'end': '$|(?=>)'
+    'name': 'html'
+    'patterns': [
+      {
+        'include': 'text.html.basic'
+      }
+    ]
+  'html_entity':
+    'patterns': [
+      {
+        'match': '(&)([a-zA-Z0-9]+|#[0-9]+|#x[0-9a-fA-F]+)(;)'
+        'name': 'constant.character.entity.html.text.sugarml'
+      }
+    ]
+  'string':
+    'begin': '([\'"])'
+    'end': '(?<!\\\\)\\1'
+    'name': 'string.quoted.sugarml'
+    'patterns': [
+      {
+        'match': '\\\\((x[0-9a-fA-F]{2})|(u[0-9]{4})|.)'
+        'name': 'constant.character.quoted.sugarml'
+      }
+    ]
+  'tag_attribute_value_paren':
+    'begin': '\\('
+    'end': '\\)'
+    'name': 'js.value.attribute.tag.sugarml'
+    'patterns': [
+      {
+        'include': '#tag_attribute_value_paren'
+      }
+      {
+        'include': '#string'
+      }
+      {
+        'include': 'source.js'
+      }
+    ]
+  'tag_attributes':
+    'begin': '(\\()'
+    'captures':
+      '1':
+        'name': 'constant.name.attribute.tag.sugarml'
+    'end': '(\\))'
+    'name': 'attributes.tag.sugarml'
+    'patterns': [
+      {
+        'captures':
+          '1':
+            'name': 'entity.other.attribute-name.tag.sugarml'
+        'match': '([^\\s(),=/]+|\\[[^\\s,=/]+]|\\([^\\s(),=/]+\\))\\s*((?=\\))|,|\\s+|$)(?!=)'
+        'name': 'attributes.tag.sugarml'
+      }
+      {
+        'begin': '([^\\s,=/]*[^\\s,=!/])\\s*(!?\\=)'
+        'beginCaptures':
+          '1':
+            'name': 'entity.other.attribute-name.tag.sugarml'
+          '2':
+            'name': 'punctuation.separator.key-value.sugarml'
+        'end': '(,|$|(?=\\)|((?<![+/*|&=:^~!?<>%-])\\s+[^+/*|&=:^~!?<>%-])))'
+        'name': 'attributes.tag.sugarml'
+        'patterns': [
+          {
+            'include': '#tag_attribute_value_paren'
+          }
+          {
+            'include': '#string'
+          }
+          {
+            'include': 'source.js'
+          }
+        ]
+      }
+    ]
+  'tag_classes':
+    'captures':
+      '1':
+        'name': 'entity.other.attribute-name.class.css.sugarml'
+    'match': '(\\.[a-zA-Z0-9_-]+)'
+    'name': 'meta.selector.css.sugarml'
+  'tag_id':
+    'captures':
+      '1':
+        'name': 'entity.other.attribute-name.id.css.sugarml'
+    'match': '(#[\\w-]+)'
+    'name': 'meta.selector.css.sugarml'
+  'tag_name':
+    'begin': '([#!]\\{(?=.*?\\}))|(\\w(([\\w:-]+[\\w-])|([\\w-]*)))'
+    'end': '(\\G(?<!\\5[^\\w-]))|\\}|$'
+    'name': 'entity.name.tag.sugarml'
+    'patterns': [
+      {
+        'begin': '\\G(?<=\\{)'
+        'end': '(?=\\})'
+        'name': 'entity.name.tag.sugarml'
+        'patterns': [
+          {
+            'match': '{'
+            'name': 'invalid.illegal.tag.sugarml'
+          }
+          {
+            'include': 'source.js'
+          }
+        ]
+      }
+    ]
+  'tag_text':
+    'begin': '(?=.)'
+    'end': '$'
+    'name': 'text.sugarml'
+    'patterns': [
+      {
+        'include': '#embedded_html'
+      }
+      {
+        'include': '#expression'
+      }
+      {
+        'include': '#html_entity'
+      }
+    ]
+'scopeName': 'source.sugarml'
